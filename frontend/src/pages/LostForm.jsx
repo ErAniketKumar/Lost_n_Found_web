@@ -8,7 +8,7 @@ const LostForm = () => {
 			<div className="flex justify-center border-2 p-2">
 				<form
 					className="flex flex-col space-y-4"
-					action="/lostitems"
+					action="/additem"
 					method="post"
 				>
 					<div className="flex flex-col">

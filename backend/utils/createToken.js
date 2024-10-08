@@ -12,5 +12,4 @@ const createToken=(res, userId)=>{
     });
     return token;
 }
-
 module.exports = createToken;

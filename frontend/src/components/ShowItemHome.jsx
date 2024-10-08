@@ -11,6 +11,7 @@ import { Separator } from "@radix-ui/react-menubar";
 
 
 const ShowItemHome = () => {
+	
 	return (
 		<div className="max-w-screen-2xl container mx-auto md:px-20 bg-[#f5f5f5] px-6 pt-6 mt-20">
 			<div className="grid md:grid-cols-4 sm:grid-cols-2 grid-cols-1 md:gap-6 gap-4">

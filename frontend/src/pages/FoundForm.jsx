@@ -2,14 +2,16 @@ import React from 'react'
 import Footer from '@/components/Footer'
 
 const FoundForm = () => {
+
   return (
     <div className="max-w-screen-2xl container mx-auto md:px-20 bg-[#f5f5f5] px-6 pt-6  mt-20">
 			<h1 className="text-2xl text-[#ea0eac] font-medium p-2 flex justify-center">Found Item information</h1>
 			<div className="flex justify-center border-2 p-2">
 				<form
 					className="flex flex-col space-y-4"
-					action="/founditem"
+					action="/additem"
 					method="post"
+					
 				>
 					<div className="flex flex-col">
 						<label htmlFor="title">
