@@ -2,67 +2,97 @@ const createToken = require("../utils/createToken");
 const asyncHandler = require("../middleware/asyncHandler");
 const itemModel = require("../models/itemModels");
 const mongoose = require("mongoose");
+const multer = require("multer");
+const path = require("path");
 
-const AddItem = asyncHandler(async (req, res) => {
-	const {
-		title,
-		category,
-		itemLocation,
-		dateTime,
-		imageUrl,
-		currentAddress,
-		description,
-	} = req.body;
-
-	if (!title || !category || !itemLocation || !imageUrl) {
-		res.status(500).json({ message: "All input are Required" });
+const storage = multer.diskStorage({
+	destination: function (req, file, cb) {
+	  cb(null, "public/api/Images");
+	},
+	filename: function (req, file, cb) {	
+	  cb(null, file.fieldname +"_" +Date.now()+path.extname(file.originalname));
 	}
-	try {
-		const itemRecord = new itemModel({
+  });
+  
+
+  const upload = multer({ storage: storage }).single("image");
+
+  const AddItem = asyncHandler(async (req, res) => { 
+	upload(req, res, async (err) => {
+	  if (err) {
+		return res.status(500).json({ message: "File upload failed" });
+	  }
+	  try {
+		const {
+		  itemType,
+		  title,
+		  category,
+		  itemLocation,
+		  dateTime,
+		  currentAddress,
+		  description,
+		  contactNo
+		} = req.body;
+
+		console.log("req is:", req.body);
+
+		if (!title || !category || !itemLocation) {
+			return res
+			  .status(400)
+			  .json({ message: "All required inputs are missing" });
+		  }
+	
+		  const itemRecord = new itemModel({
+			itemType,
 			title,
 			category,
 			itemLocation,
 			dateTime,
-			imageUrl,
+			imageUrl: `${req.file.filename}`,
 			currentAddress,
 			description,
-		});
-		await itemRecord.save();
-		res.status(201).json({ message: "item record added Successfully" });
-	} catch (error) {
-		console.error("Signup error:", error);
-		res.status(500).json({ message: "Internal server error" });
-	}
-});
+			contactNo,
+		  });
+
+		  await itemRecord.save();
+		  res.status(201).json({ message: "Item record added successfully" });
+		} catch (error) {
+		  console.error("Add item error:", error);
+		  res.status(500).json({ message: "Internal server error" });
+		}
+	  });
+	});
 
 //show single/specific items details
 const ItemInfo = asyncHandler(async (req, res) => {
 	const { id } = req.params;
 	try {
-		const itemInfo = await itemModel.findById({ _id: id });
+		const itemInfo = await itemModel.findById(id);
 		if (itemInfo) {
-			res.status(200).json(itemInfo);
+			return res.status(200).json(itemInfo);
 		} else {
-			res.status(404).json({ message: "no record found" });
+			return res.status(404).json({ message: "No record found" });
 		}
 	} catch (error) {
-		console.log(error);
-		res.status(500).json({ message: error });
+		console.error("Item info error:", error);
+		return res.status(500).json({ message: "Internal server error" });
 	}
 });
 
 // show all items record;
 
+
 const ShowAllItem = asyncHandler(async (req, res) => {
 	try {
-		const allitem = await itemModel.find({});
-		if (allitem) {
-			res.status(200).json(allitem);
+		const allItems = await itemModel.find({});
+		if (allItems && allItems.length > 0) {
+			return res.status(200).json(allItems);
 		} else {
-			res.status(500).json({ message: "error to fetching not found" });
+			return res.status(404).json({ message: "No items found" });
 		}
 	} catch (error) {
-		res.status(500).json({ message: `internal issue: ${error}` });
+		console.error("Show all items error:", error);
+		return res.status(500).json({ message: "Internal server error" });
 	}
 });
 
@@ -71,55 +101,66 @@ const ShowAllItem = asyncHandler(async (req, res) => {
 const ItemByCategory = asyncHandler(async (req, res) => {
 	const { category } = req.params;
 	try {
-		let itemInfo = await itemModel.find({});
-
-		if (itemInfo) {
-			const filteredItem = itemInfo.filter((item) => {
-				return item.category == category;
-			});
-			if (filteredItem.length > 0) {
-				res.status(200).json(filteredItem);
-			} else {
-				res.status(404).json({ message: "No item in this Category" });
-			}
+		const itemInfo = await itemModel.find({ category });
+		if (itemInfo && itemInfo.length > 0) {
+			return res.status(200).json(itemInfo);
 		} else {
-			res
+			return res
 				.status(404)
-				.json({ message: "Some error occurred while fetching details!" });
+				.json({ message: "No items found in this category" });
 		}
 	} catch (error) {
-		console.log(error);
-		res.status(500).json({ message: error.message });
+		console.error("Item by category error:", error);
+		return res.status(500).json({ message: "Internal server error" });
 	}
 });
+
+
+//last 5 items added get
+
+const LastFiveItem = asyncHandler(async(req, res)=>{
+	try {
+		const lastFiveItems = await itemModel.find({})
+		  .sort({ createdAt: -1 }) 
+		  .limit(5);
+		  if (lastFiveItems) {
+			return res.status(200).json(lastFiveItems);
+		} else {
+			return res.status(404).json({ message: "No record found" });
+		}
+	  } catch (error) {
+		console.error("show last 5 items error:", error);
+		return res.status(500).json({ message: "Internal server error" });
+	  }
+})
 
 const DeleteItem = asyncHandler(async (req, res) => {
 	const { id } = req.params;
 	try {
-		const item = await itemModel.findByIdAndDelete({ _id: id });
+		const item = await itemModel.findByIdAndDelete(id);
 		if (item) {
-			res.status(200).json({ message: "item deleted successfully" });
+			return res.status(200).json({ message: "Item deleted successfully" });
 		} else {
-			res.status(404).json({ message: "item not found" });
+			return res.status(404).json({ message: "Item not found" });
 		}
 	} catch (error) {
-		console.log(error);
-		res.status(500).json({ message: error });
+		console.error("Delete item error:", error);
+		return res.status(500).json({ message: "Internal server error" });
 	}
 });
 
 const UpdateItem = asyncHandler(async (req, res) => {
-	const { id } = req.params;
-	const {
-		title,
-		category,
-		itemLocation,
-		dateTime,
-		imageUrl,
-		currentAddress,
-		description,
-	} = req.body;
 	try {
+		const { id } = req.params;
+		const {
+			title,
+			category,
+			itemLocation,
+			dateTime,
+			imageUrl,
+			currentAddress,
+			description,
+		} = req.body;
 		const itemInfo = await itemModel.findByIdAndUpdate(
 			id,
 			{
@@ -136,15 +177,15 @@ const UpdateItem = asyncHandler(async (req, res) => {
 			{ new: true, runValidators: true }
 		);
 		if (itemInfo) {
-			res
+			return res
 				.status(200)
 				.json({ message: "Item updated successfully", item: itemInfo });
 		} else {
-			res.status(404).json({ message: "somthing went wrong" });
+			return res.status(404).json({ message: "Item not found" });
 		}
 	} catch (error) {
-		console.error("Update error:", error);
-		res.status(500).json({ message: "Internal server error" });
+		console.error("Update item error:", error);
+		return res.status(500).json({ message: "Internal server error" });
 	}
 });
 
@@ -155,4 +196,5 @@ module.exports = {
 	ItemByCategory,
 	DeleteItem,
 	UpdateItem,
+	LastFiveItem,
 };

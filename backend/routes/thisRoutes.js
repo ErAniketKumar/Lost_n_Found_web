@@ -9,7 +9,8 @@ const {
 	ShowAllItem,
 	ItemByCategory,
 	DeleteItem,
-    UpdateItem
+    UpdateItem,
+	LastFiveItem
 } = require("../controller/ItemController");
 
 //auth controller
@@ -32,6 +33,8 @@ router.get("/item/category/:category", ItemByCategory);
 
 router.delete("/item/:id",DeleteItem);
 
-router.put("/item/:id",UpdateItem)
+router.put("/item/:id",UpdateItem);
+
+router.get("/lastfiveitems",LastFiveItem);
 
 module.exports = router;

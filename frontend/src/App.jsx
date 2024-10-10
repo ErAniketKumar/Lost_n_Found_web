@@ -10,7 +10,8 @@ import LostForm from "./pages/LostForm";
 import FoundForm from "./pages/FoundForm";
 import Donationhomepage from "./components/Donation/Donationhomepage";
 import ScrollerArrow from "./components/ScrollerArrow";
-import ShowItemHome from "./components/ShowItemHome";
+import ShowItemHome from "./components/items/ShowItemHome";
+import SingleItemDetails from "./components/items/singleItemDetails";
 
 function App() {
 	return (
@@ -21,7 +22,7 @@ function App() {
 				<Route path="/lostform" element={<LostForm />}></Route>
 				<Route path="/foundform" element={<FoundForm />}></Route>
 				<Route path="/donationhomepage" element={<Donationhomepage />}></Route>
-        <Route path="/showitems" element={<ShowItemHome/>}></Route>
+				<Route path="/showitems" element={<ShowItemHome />}></Route>
 				<Route
 					path="/"
 					element={
@@ -34,6 +35,7 @@ function App() {
 						</>
 					}
 				></Route>
+				<Route path="/item/:id" element={<SingleItemDetails/>}></Route>
 			</Routes>
 		</div>
 	);
