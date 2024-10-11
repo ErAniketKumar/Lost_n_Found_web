@@ -12,6 +12,7 @@ import Donationhomepage from "./components/Donation/Donationhomepage";
 import ScrollerArrow from "./components/ScrollerArrow";
 import ShowItemHome from "./components/items/ShowItemHome";
 import SingleItemDetails from "./components/items/singleItemDetails";
+import Reviews from "./components/Reviews";
 
 function App() {
 	return (
@@ -30,6 +31,7 @@ function App() {
 							<HeroSection />
 							<GuidProcess />
 							<LatestObject />
+							<Reviews></Reviews>
 							<Footer />
 							<ScrollerArrow></ScrollerArrow>
 						</>

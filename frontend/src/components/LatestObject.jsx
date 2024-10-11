@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
 
-import { Separator } from "@/components/ui/separator";
+
 import { ToastContainer, toast } from "react-toastify";
+import { Link } from "react-router-dom";
 const LatestObject = () => {
 	const VITE_API_URL = import.meta.env.VITE_AUTH_API_URL;
 
 	const [latestData, setLatestData] = useState([]);
 
-	const fetchLatestData = async (latestDataAPi) => {
-		const response = await fetch(latestDataAPi, {
+	const fetchLatestData = async (latestDataApi) => {
+		const response = await fetch(latestDataApi, {
 			method: "GET",
 		});
 		const data = await response.json();
@@ -38,7 +39,7 @@ const LatestObject = () => {
 						>
 							<div>
 								<img
-									className="w-full object-cover rounded-lg"
+									className="w-full max-h-[10rem] object-cover rounded-lg"
 									src={`${VITE_API_URL}/Images/${item.imageUrl}`}
 									alt=""
 								/>
@@ -63,9 +64,11 @@ const LatestObject = () => {
 										<h1 className="text-lg bg-gray-200 rounded px-16 py-4">
 											{item.itemType}
 										</h1>
-										<button className="text-lg text-nowrap border border-orange-500 hover:bg-purple-800 rounded px-16 py-4 hover:text-white">
-											Show Details
-										</button>
+										<Link to={`/item/${item._id}`}>
+											<button className="text-lg mt-2 text-nowrap border border-orange-500 hover:bg-purple-800 rounded px-16 py-4 hover:text-white">
+												Show Details
+											</button>
+										</Link>
 									</div>
 								</div>
 							</div>

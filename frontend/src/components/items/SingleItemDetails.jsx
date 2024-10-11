@@ -71,7 +71,7 @@ const SingleItemDetails = () => {
 							<p className="text-xl sm:text-2xl font-medium text-indigo-700 mb-2">
 								Date and time :
 								<span className="text-base sm:text-lg text-gray-800">
-									{itemData.datetime}
+									{itemData.dateTime}
 								</span>
 							</p>
 						</div>

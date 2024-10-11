@@ -8,7 +8,7 @@ const LostForm = () => {
     const [title, setTitle] = useState("");
     const [category, setCategory] = useState("");
     const [itemLocation, setItemLocation] = useState("");
-    const [datetime, setDatetime] = useState("");
+    const [dateTime, setDateTime] = useState("");
     const [imageFile, setImageFile] = useState(null); 
     const [currentaddress, setCurrentaddress] = useState("");
     const [description, setDescription] = useState("");
@@ -22,7 +22,7 @@ const LostForm = () => {
         lostFormData.append("title", title);
         lostFormData.append("category", category);
         lostFormData.append("itemLocation", itemLocation);
-        lostFormData.append("datetime", datetime);
+        lostFormData.append("dateTime", dateTime);
         lostFormData.append("image", imageFile); // Added image file to FormData
         lostFormData.append("currentaddress", currentaddress);
         lostFormData.append("description", description);
@@ -94,15 +94,15 @@ const LostForm = () => {
 					</div>
 
 					<div className="flex flex-col">
-						<label htmlFor="datetime">Date and time</label>
+						<label htmlFor="dateTime">Date and time</label>
 						<input
 							className="border border-gray-900 p-2"
 							type="text"
-							name="datetime"
-							id="datetime"
+							name="dateTime"
+							id="dateTime"
 							placeholder="This fotmat only* 25/10/2024 10:08AM"
-							value={datetime}
-							onChange={(e) => setDatetime(e.target.value)}
+							value={dateTime}
+							onChange={(e) => setDateTime(e.target.value)}
 						/>
 					</div>
 

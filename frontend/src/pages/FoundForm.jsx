@@ -7,7 +7,7 @@ const FoundForm = () => {
 	const [title, setTitle] = useState("");
 	const [category, setCategory] = useState("");
 	const [itemLocation, setItemLocation] = useState("");
-	const [datetime, setDatetime] = useState("");
+	const [dateTime, setDateTime] = useState("");
 	const [imageFile, setImageFile] = useState(null);
 	const [currentaddress, setCurrentaddress] = useState("");
 	const [description, setDescription] = useState("");
@@ -20,7 +20,7 @@ const FoundForm = () => {
 		foundFormData.append("title", title);
 		foundFormData.append("category", category);
 		foundFormData.append("itemLocation", itemLocation);
-		foundFormData.append("datetime", datetime);
+		foundFormData.append("dateTime", dateTime);
 		foundFormData.append("image", imageFile); // Added image file to FormData
 		foundFormData.append("currentaddress", currentaddress);
 		foundFormData.append("description", description);
@@ -93,15 +93,15 @@ const FoundForm = () => {
 					</div>
 
 					<div className="flex flex-col">
-						<label htmlFor="datetime">Date and time</label>
+						<label htmlFor="dateTime">Date and time</label>
 						<input
 							className="border border-gray-900 p-2"
 							type="text"
-							name="datetime"
-							id="datetime"
+							name="dateTime"
+							id="dateTime"
 							placeholder="This fotmat only* 25/10/2024 10:08AM"
-							value={datetime}
-							onChange={(e) => setDatetime(e.target.value)}
+							value={dateTime}
+							onChange={(e) => setDateTime(e.target.value)}
 						/>
 					</div>
 
