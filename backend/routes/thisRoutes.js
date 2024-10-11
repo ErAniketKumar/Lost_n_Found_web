@@ -10,8 +10,13 @@ const {
 	ItemByCategory,
 	DeleteItem,
     UpdateItem,
-	LastFiveItem
+	LastFiveItem,
+	filterItemByCategoryAndDate,
+
 } = require("../controller/ItemController");
+
+const {reviewFeedback} = require("../controller/ReviewController");
+
 
 //auth controller
 router.post("/login", Login);
@@ -36,5 +41,11 @@ router.delete("/item/:id",DeleteItem);
 router.put("/item/:id",UpdateItem);
 
 router.get("/lastfiveitems",LastFiveItem);
+
+router.post("/filteritem",filterItemByCategoryAndDate);
+
+//items controller end
+
+router.post("/review",reviewFeedback);
 
 module.exports = router;

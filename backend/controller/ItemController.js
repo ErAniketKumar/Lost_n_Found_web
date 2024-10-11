@@ -7,61 +7,63 @@ const path = require("path");
 
 const storage = multer.diskStorage({
 	destination: function (req, file, cb) {
-	  cb(null, "public/api/Images");
+		cb(null, "public/api/Images");
 	},
-	filename: function (req, file, cb) {	
-	  cb(null, file.fieldname +"_" +Date.now()+path.extname(file.originalname));
-	}
-  });
-  
+	filename: function (req, file, cb) {
+		cb(
+			null,
+			file.fieldname + "_" + Date.now() + path.extname(file.originalname)
+		);
+	},
+});
 
-  const upload = multer({ storage: storage }).single("image");
+const upload = multer({ storage: storage }).single("image");
 
-  const AddItem = asyncHandler(async (req, res) => { 
+const AddItem = asyncHandler(async (req, res) => {
 	upload(req, res, async (err) => {
-	  if (err) {
-		return res.status(500).json({ message: "File upload failed" });
-	  }
-	  try {
-		const {
-		  itemType,
-		  title,
-		  category,
-		  itemLocation,
-		  dateTime,
-		  currentAddress,
-		  description,
-		  contactNo
-		} = req.body;
-
-		console.log("req is:", req.body);
-
-		if (!title || !category || !itemLocation) {
-			return res
-			  .status(400)
-			  .json({ message: "All required inputs are missing" });
-		  }
-	
-		  const itemRecord = new itemModel({
-			itemType,
-			title,
-			category,
-			itemLocation,
-			dateTime,
-			imageUrl: `${req.file.filename}`,
-			currentAddress,
-			description,
-			contactNo,
-		  });
-
-		  await itemRecord.save();
-		  res.status(201).json({ message: "Item record added successfully" });
-		} catch (error) {
-		  console.error("Add item error:", error);
-		  res.status(500).json({ message: "Internal server error" });
+		if (err) {
+			return res.status(500).json({ message: "File upload failed" });
 		}
-	  });
+		try {
+			const {
+				itemType,
+				title,
+				category,
+				itemLocation,
+				dateTime,
+				currentAddress,
+				description,
+				contactNo,
+			} = req.body;
+
+			console.log("req is:", req.body);
+
+			if (!title || !category || !itemLocation) {
+				return res
+					.status(400)
+					.json({ message: "All required inputs are missing" });
+			}
+
+			const itemRecord = new itemModel({
+				itemType,
+				title,
+				category,
+				itemLocation,
+				dateTime,
+				imageUrl: `${req.file.filename}`,
+				currentAddress,
+				description,
+				contactNo,
+			});
+
+			await itemRecord.save();
+			res.status(201).json({ message: "Item record added successfully" });
+		} catch (error) {
+			console.error("Add item error:", error);
+			res.status(500).json({ message: "Internal server error" });
+		}
 	});
+});
 
 //show single/specific items details
 const ItemInfo = asyncHandler(async (req, res) => {
@@ -80,7 +82,6 @@ const ItemInfo = asyncHandler(async (req, res) => {
 });
 
 // show all items record;
-
 
 const ShowAllItem = asyncHandler(async (req, res) => {
 	try {
@@ -115,24 +116,24 @@ const ItemByCategory = asyncHandler(async (req, res) => {
 	}
 });
 
-
 //last 5 items added get
 
-const LastFiveItem = asyncHandler(async(req, res)=>{
+const LastFiveItem = asyncHandler(async (req, res) => {
 	try {
-		const lastFiveItems = await itemModel.find({})
-		  .sort({ createdAt: -1 }) 
-		  .limit(5);
-		  if (lastFiveItems) {
+		const lastFiveItems = await itemModel
+			.find({})
+			.sort({ createdAt: -1 })
+			.limit(5);
+		if (lastFiveItems) {
 			return res.status(200).json(lastFiveItems);
 		} else {
 			return res.status(404).json({ message: "No record found" });
 		}
-	  } catch (error) {
+	} catch (error) {
 		console.error("show last 5 items error:", error);
 		return res.status(500).json({ message: "Internal server error" });
-	  }
-})
+	}
+});
 
 const DeleteItem = asyncHandler(async (req, res) => {
 	const { id } = req.params;
@@ -189,6 +190,32 @@ const UpdateItem = asyncHandler(async (req, res) => {
 	}
 });
 
+const filterItemByCategoryAndDate = asyncHandler(async (req, res) => {
+	const { category, startDate, endDate, itemLocation } = req.body;
+	let filter = {};
+
+	if (category && category !== "noselect") {
+		filter.category = category;
+	}
+	if (startDate && endDate) {
+		filter.datetime = {
+			$gte: new Date(startDate),
+			$lte: new Date(endDate),
+		};
+	}
+	if (itemLocation) {
+		filter.itemLocation = { $regex: itemLocation, $options: "i" };
+	}
+	try {
+		const items = await itemModel.find(filter);
+		res.status(200).json(items);
+		console.log("items filered", items);
+	} catch (error) {
+		console.error("Error fetching filtered items:", error);
+		res.status(500).json({ message: "Internal server error" });
+	}
+});
+
 module.exports = {
 	AddItem,
 	ItemInfo,
@@ -197,4 +224,5 @@ module.exports = {
 	DeleteItem,
 	UpdateItem,
 	LastFiveItem,
+	filterItemByCategoryAndDate,
 };
