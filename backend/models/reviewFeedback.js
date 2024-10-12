@@ -4,18 +4,23 @@ const reviewFeedbackSchema = new mongoose.Schema(
 	{
 		name: {
 			type: String,
-			required: true,
+			required: [true, "Name is required"],
 		},
 		starCount: {
 			type: Number,
-			required: true,
+			required: [true, "Star count is required"],
 		},
 		comments: {
 			type: String,
-			required: true,
+			required: [true, "Comments are required"],
 		},
 	},
 	{ timestamps: true }
 );
 
-const reviewFeedbackModel = mongoose.model("reviewFeedback=ollection", reviewFeedbackSchema);
+const ReviewModel = mongoose.model(
+	"reviewFeedbackcollection",
+	reviewFeedbackSchema
+);
+
+module.exports = ReviewModel;

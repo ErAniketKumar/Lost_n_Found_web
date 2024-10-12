@@ -9,14 +9,15 @@ const {
 	ShowAllItem,
 	ItemByCategory,
 	DeleteItem,
-    UpdateItem,
+	UpdateItem,
 	LastFiveItem,
 	filterItemByCategoryAndDate,
-
 } = require("../controller/ItemController");
 
-const {reviewFeedback} = require("../controller/ReviewController");
-
+const {
+	reviewFeedback,
+	reviewFeedbackFetch,
+} = require("../controller/ReviewController");
 
 //auth controller
 router.post("/login", Login);
@@ -36,16 +37,17 @@ router.get("/item/:id", ItemInfo);
 
 router.get("/item/category/:category", ItemByCategory);
 
-router.delete("/item/:id",DeleteItem);
+router.delete("/item/:id", DeleteItem);
 
-router.put("/item/:id",UpdateItem);
+router.put("/item/:id", UpdateItem);
 
-router.get("/lastfiveitems",LastFiveItem);
+router.get("/lastfiveitems", LastFiveItem);
 
-router.post("/filteritem",filterItemByCategoryAndDate);
+router.post("/filteritem", filterItemByCategoryAndDate);
 
 //items controller end
 
-router.post("/review",reviewFeedback);
+router.post("/review", reviewFeedback);
+router.get("/review", reviewFeedbackFetch);
 
 module.exports = router;

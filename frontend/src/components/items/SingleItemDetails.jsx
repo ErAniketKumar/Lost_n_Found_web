@@ -44,7 +44,7 @@ const SingleItemDetails = () => {
 						<img
 							src={`${VITE_API_URL}/Images/${itemData.imageUrl}`}
 							alt="image"
-							className="w-full h-auto object-cover rounded-lg"
+							className="w-full max-h-[30rem] object-cover rounded-lg"
 						/>
 					</div>
 
