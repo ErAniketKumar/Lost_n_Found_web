@@ -19,10 +19,14 @@ const userSchema = mongoose.Schema(
 			type: Boolean,
 			default: false,
 		},
+		itemsList: [{
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'itemsCollection', 
+		}],
 	},
 	{ timestamps: true }
 );
 
-const userModel = mongoose.model("userCollections", userSchema);
+const userModel = mongoose.model("userCol", userSchema);
 
 module.exports = userModel;

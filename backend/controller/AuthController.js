@@ -2,6 +2,7 @@ const createToken = require("../utils/createToken");
 const asyncHandler = require("../middleware/asyncHandler");
 const userModel = require("../models/userModel");
 const bcrypt = require("bcrypt");
+const nodemailer = require("nodemailer");
 
 const Login = asyncHandler(async (req, res) => {
 	const { email, password } = req.body;
@@ -33,7 +34,7 @@ const Login = asyncHandler(async (req, res) => {
 });
 
 const Signup = asyncHandler(async (req, res) => {
-	const { username, email, password } = req.body;
+	const { username, email, number, password } = req.body;
 	try {
 		if (!username || !email || !password) {
 			res.status(500).json({ message: "All input are Required" });
@@ -45,10 +46,11 @@ const Signup = asyncHandler(async (req, res) => {
 		const salt = await bcrypt.genSalt(10);
 		const hashPassword = await bcrypt.hash(password, salt);
 
-		const user = new userModel({ username, email, password: hashPassword });
+		const user = new userModel({ username, email,number, password: hashPassword });
 		await user.save();
 		createToken(res, user._id);
 		res.status(201).json({ message: "User Created Successfully" });
+		
 	} catch (error) {
 		console.error("Signup error:", error);
 		res.status(500).json({ message: "Internal server error" });
@@ -56,11 +58,16 @@ const Signup = asyncHandler(async (req, res) => {
 });
 
 const Logout = asyncHandler(async (req, res) => {
-	res.cookies("jwt", "", {
+	res.cookies("token", "", {
 		httpOnly: true,
 		expires: new Date(0),
 	});
 	res.status(200).json({ message: "Logout Successfully" });
 });
 
-module.exports = { Login, Signup, Logout };
+const GetUserId = asyncHandler(async (req, res) => {
+	const user = req.user;
+	res.json({userId: user.userId});
+});
+
+module.exports = { Login, Signup, Logout, GetUserId };

@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const { Login, Signup, Logout } = require("../controller/AuthController");
+const { Login, Signup, Logout, GetUserId } = require("../controller/AuthController");
 
 const {
 	AddItem,
@@ -19,6 +19,8 @@ const {
 	reviewFeedbackFetch,
 } = require("../controller/ReviewController");
 
+const {authenticate, authorizedAdmin} = require("../middleware/authenticationMiddleware");
+
 //auth controller
 router.post("/login", Login);
 
@@ -29,7 +31,7 @@ router.post("/logout", Logout);
 //auth controllerres.end
 
 //items controller start
-router.post("/additem", AddItem);
+router.post("/additem", authenticate, AddItem);
 
 router.get("/allitem", ShowAllItem);
 
@@ -49,5 +51,8 @@ router.post("/filteritem", filterItemByCategoryAndDate);
 
 router.post("/review", reviewFeedback);
 router.get("/review", reviewFeedbackFetch);
+
+
+router.get("/getuserId", authenticate, GetUserId);
 
 module.exports = router;

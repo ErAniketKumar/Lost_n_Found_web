@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import Footer from "@/components/Footer";
 import { Input } from "@/components/ui/input";
 import { NavLink } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
+import { useUserAuthContext } from "@/contexts/userAuth";
 
 const LoginReg = () => {
 	const VITE_AUTH_API_URL = import.meta.env.VITE_AUTH_API_URL;
@@ -16,6 +16,8 @@ const LoginReg = () => {
 	const [confirmPassword, setConfirmPassword] = useState("");
 	const [isAdmin, setIsAdmin] = useState("false");
 	const navigate = useNavigate();
+
+	const {userId} = useUserAuthContext();
 
 	const handleLoginFormSubmit = async (e) => {
 		e.preventDefault();
@@ -29,6 +31,7 @@ const LoginReg = () => {
 				"Content-Type": "application/json",
 			},
 			body: JSON.stringify(loginData),
+			credentials: "include"
 		});
 		const data = await response.json();
 		if(!response.ok) {
@@ -36,6 +39,7 @@ const LoginReg = () => {
 		} else {
 			toast.success(data.message);
 			navigate("/");
+			console.log("Login", userId);
 		}
 	};
 
@@ -58,6 +62,7 @@ const LoginReg = () => {
 				"Content-Type": "application/json",
 			},
 			body: JSON.stringify(signupData),
+			credentials: "include",
 		});
 		const data = await response.json();
 		if(!response.ok) {
@@ -65,17 +70,11 @@ const LoginReg = () => {
 		} else {
 			toast.success(data.message);
 			console.log("now navigating to login");
-			window.location.href = "/login";
-			// navigate("/login");
+		
+			navigate("/login");
 		}
 	};
 
-	// useEffect(() => {
-	// 	// const token = localStorage.getItem("token");
-	// 	// if (token) {
-	// 	// 	window.location.href = "/";
-	// 	// }
-	// });
 	return (
 		<div className="max-w-screen-2xl container mx-auto md:px-20 bg-[#f5f5f5] px-6 pt-6 md:mt-20 mt-24">
 		  <ToastContainer />
@@ -176,7 +175,7 @@ const LoginReg = () => {
 							<Input
 								className="outline-none"
 								type="password"
-								name="repassword"
+								name="confirmPassword"
 								placeholder="Re-password - ********"
 								onChange={(e) => setConfirmPassword(e.target.value)}
 							></Input>
@@ -197,7 +196,7 @@ const LoginReg = () => {
 					</TabsContent>
 				</Tabs>
 			</div>
-			<Footer></Footer>
+		
 		</div>
 	);
 };

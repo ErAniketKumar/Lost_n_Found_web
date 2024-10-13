@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
 import PaginationSection from "@/components/PaginationSection";
 import Footer from "../Footer";
 
@@ -194,7 +193,6 @@ const ShowItemHome = () => {
 					/>
 				</div>
 			</div>
-			<Footer></Footer>
 		</div>
 	);
 };

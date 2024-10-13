@@ -4,6 +4,7 @@ const itemModel = require("../models/itemModels");
 const mongoose = require("mongoose");
 const multer = require("multer");
 const path = require("path");
+const userModel = require("../models/userModel");
 
 const storage = multer.diskStorage({
 	destination: function (req, file, cb) {
@@ -36,15 +37,15 @@ const AddItem = asyncHandler(async (req, res) => {
 				contactNo,
 			} = req.body;
 
-			console.log("req is:", req.body);
-
 			if (!title || !category || !itemLocation) {
 				return res
 					.status(400)
 					.json({ message: "All required inputs are missing" });
 			}
 
+			const user = req.user.userId;
 			const itemRecord = new itemModel({
+				user,
 				itemType,
 				title,
 				category,
@@ -55,8 +56,13 @@ const AddItem = asyncHandler(async (req, res) => {
 				description,
 				contactNo,
 			});
-
 			await itemRecord.save();
+		
+			await userModel.findByIdAndUpdate(
+				user,
+				{ $push: { itemsList: itemRecord._id } },  // Push the item ID into the user's items array
+				{ new: true }  // Optionally return the updated document
+			);
 			res.status(201).json({ message: "Item record added successfully" });
 		} catch (error) {
 			console.error("Add item error:", error);
@@ -209,7 +215,6 @@ const filterItemByCategoryAndDate = asyncHandler(async (req, res) => {
 	try {
 		const items = await itemModel.find(filter);
 		res.status(200).json(items);
-		console.log("items filered", items);
 	} catch (error) {
 		console.error("Error fetching filtered items:", error);
 		res.status(500).json({ message: "Internal server error" });

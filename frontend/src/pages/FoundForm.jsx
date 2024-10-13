@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Footer from "@/components/Footer";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 const FoundForm = () => {
@@ -28,6 +27,7 @@ const FoundForm = () => {
 		const response = await fetch(`${VITE_API_URL}/additem`, {
 			method: "POST",
 			body: foundFormData,
+			credentials:"include",
 		});
 		const data = await response.json();
 		if (!response.ok) {
@@ -166,7 +166,7 @@ const FoundForm = () => {
 				</form>
 			</div>
 
-			<Footer></Footer>
+
 		</div>
 	);
 };

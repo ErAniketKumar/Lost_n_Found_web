@@ -89,7 +89,6 @@ const Reviews = () => {
 			} else {
 				const data = await response.json();
 				setReviewsData(data);
-				console.log("review data", data); // Corrected to log the fetched data
 			}
 		} catch (error) {
 			console.log(error);

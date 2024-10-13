@@ -35,6 +35,11 @@ const itemSchema = mongoose.Schema(
 			type: String,
 			default: "Not Provided",
 		},
+		user: {
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'userCol',
+			required: true,
+		},
 	},
 	{ timestamps: true }
 );

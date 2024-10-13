@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Footer from "@/components/Footer";
+
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 
@@ -30,6 +30,7 @@ const LostForm = () => {
 		const response = await fetch(`${VITE_API_URL}/additem`, {
             method: "POST",
             body: lostFormData, // Changed to send FormData
+			credentials:"include"
         });
         const data = await response.json();
         if (!response.ok) {
@@ -166,7 +167,7 @@ const LostForm = () => {
 				</form>
 			</div>
 
-			<Footer></Footer>
+	
 		</div>
 	);
 };

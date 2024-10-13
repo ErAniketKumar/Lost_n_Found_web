@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Footer from "../Footer";
 import { MdArrowBackIos } from "react-icons/md";
 import { IoIosCall } from "react-icons/io";
 import { Link, useParams } from "react-router-dom";
@@ -107,7 +106,6 @@ const SingleItemDetails = () => {
 			) : (
 				<p>Loading...</p>
 			)}
-			<Footer />
 		</div>
 	);
 };
