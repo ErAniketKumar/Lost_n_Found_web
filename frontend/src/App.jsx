@@ -11,12 +11,13 @@ import FoundForm from "./pages/FoundForm";
 import Donationhomepage from "./components/Donation/Donationhomepage";
 import ScrollerArrow from "./components/ScrollerArrow";
 import ShowItemHome from "./components/items/ShowItemHome";
-import SingleItemDetails from "./components/items/singleItemDetails";
 import Reviews from "./components/Reviews";
 import { UserAuthContextProvider } from "./contexts/userAuth";
 import ProtectedRoute from "./components/ProtectedRoute"; // Import the ProtectedRoute component
 import UserPost from "./components/users/UserPost";
 import UpdateItemForm from "./pages/UpdateItemForm";
+import SingleItemDetails from './components/items/SingleItemDetails';
+
 
 function App() {
 	return (
