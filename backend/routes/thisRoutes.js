@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
-const { Login, Signup, Logout, GetUserId } = require("../controller/AuthController");
+const { Login, Signup, Logout, GetUserId, getUserInformation } = require("../controller/UserController");
 
 const {
 	AddItem,
@@ -12,6 +12,8 @@ const {
 	UpdateItem,
 	LastFiveItem,
 	filterItemByCategoryAndDate,
+	specificUserCreatedPostDetails
+	
 } = require("../controller/ItemController");
 
 const {
@@ -26,7 +28,11 @@ router.post("/login", Login);
 
 router.post("/signup", Signup);
 
-router.post("/logout", Logout);
+router.get("/logout", Logout);
+
+router.get("/getuserId", authenticate, GetUserId);
+
+router.get("/userInfo/:id",getUserInformation);
 
 //auth controllerres.end
 
@@ -41,6 +47,8 @@ router.get("/item/category/:category", ItemByCategory);
 
 router.delete("/item/:id", DeleteItem);
 
+router.get("/userPostDetails/:id",specificUserCreatedPostDetails)
+
 router.put("/item/:id", UpdateItem);
 
 router.get("/lastfiveitems", LastFiveItem);
@@ -53,6 +61,5 @@ router.post("/review", reviewFeedback);
 router.get("/review", reviewFeedbackFetch);
 
 
-router.get("/getuserId", authenticate, GetUserId);
 
 module.exports = router;

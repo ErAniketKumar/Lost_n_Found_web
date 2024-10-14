@@ -58,11 +58,14 @@ const Signup = asyncHandler(async (req, res) => {
 });
 
 const Logout = asyncHandler(async (req, res) => {
-	res.cookies("token", "", {
-		httpOnly: true,
-		expires: new Date(0),
-	});
-	res.status(200).json({ message: "Logout Successfully" });
+    
+    // Clear the token cookie
+    res.clearCookie("token", {
+        httpOnly: true, // Ensure the cookie is inaccessible to client-side scripts
+        path: '/' // Specify the path to clear the cookie from
+    });
+    
+    res.status(200).json({ message: "Logout Successfully" });
 });
 
 const GetUserId = asyncHandler(async (req, res) => {
@@ -70,4 +73,10 @@ const GetUserId = asyncHandler(async (req, res) => {
 	res.json({userId: user.userId});
 });
 
-module.exports = { Login, Signup, Logout, GetUserId };
+const getUserInformation = asyncHandler(async(req,res)=>{
+	const {id} = req.params;
+	const userData = await userModel.findById(id);
+	res.status(200).json({userData});
+})
+
+module.exports = { Login, Signup, Logout, GetUserId,getUserInformation };

@@ -57,11 +57,11 @@ const AddItem = asyncHandler(async (req, res) => {
 				contactNo,
 			});
 			await itemRecord.save();
-		
+
 			await userModel.findByIdAndUpdate(
 				user,
-				{ $push: { itemsList: itemRecord._id } },  // Push the item ID into the user's items array
-				{ new: true }  // Optionally return the updated document
+				{ $push: { itemsList: itemRecord._id } }, // Push the item ID into the user's items array
+				{ new: true } // Optionally return the updated document
 			);
 			res.status(201).json({ message: "Item record added successfully" });
 		} catch (error) {
@@ -221,6 +221,20 @@ const filterItemByCategoryAndDate = asyncHandler(async (req, res) => {
 	}
 });
 
+const specificUserCreatedPostDetails = asyncHandler(async (req, res) => {
+	const { id } = req.params;
+	try {
+		const data = await itemModel.find({ user: id });
+		if (data) {
+			res.status(200).json(data);
+		} else {
+			res.status(500).json({ message: "item not found!" });
+		}
+	} catch (error) {
+		res.status(500).json({ message: "internal error" });
+	}
+});
+
 module.exports = {
 	AddItem,
 	ItemInfo,
@@ -230,4 +244,5 @@ module.exports = {
 	UpdateItem,
 	LastFiveItem,
 	filterItemByCategoryAndDate,
+	specificUserCreatedPostDetails,
 };
