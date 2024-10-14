@@ -7,7 +7,7 @@ const cookieParser = require("cookie-parser");
 
 dotenv.config();
 const allowedOrigins = [
-  'https://https://mayihelpyou-mq14ts3k8-anikets-projects-3e38dd37.vercel.app', // Your deployed frontend URL
+  'https://mayihelpuu.vercel.app/', // Your deployed frontend URL
   'http://localhost:5173',            // Localhost for development
 ];
 
