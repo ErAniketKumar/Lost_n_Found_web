@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import PaginationSection from "@/components/PaginationSection";
-import Footer from "../Footer";
 
 const ShowItemHome = () => {
 	const VITE_API_URL = import.meta.env.VITE_AUTH_API_URL;
@@ -102,7 +101,7 @@ const ShowItemHome = () => {
 								value={category}
 								onChange={(e) => setCategory(e.target.value)}
 							>
-								<option value="noselect">no select</option>
+								<option value="noselect">not select</option>
 								<option value="electronic">Electronics</option>
 								<option value="fashion">Fashion</option>
 								<option value="miscellaneous">Miscellaneous</option>

@@ -10,7 +10,7 @@ import {
 const AccordianSlider = () => {
 	return (
 		<div className="relative">
-			<Carousel>
+			<Carousel loop>
 				<CarouselContent>
 					<CarouselItem>
 						<img src="/images/bgimg (1).jpg" alt="" />

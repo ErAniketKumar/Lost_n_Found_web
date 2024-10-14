@@ -17,7 +17,7 @@ const LoginReg = () => {
 	const [isAdmin, setIsAdmin] = useState("false");
 	const navigate = useNavigate();
 
-	const {userId} = useUserAuthContext();
+	const {userId,fetchUserId} = useUserAuthContext();
 
 	const handleLoginFormSubmit = async (e) => {
 		e.preventDefault();
@@ -38,8 +38,8 @@ const LoginReg = () => {
 			toast.error(data.message);
 		} else {
 			toast.success(data.message);
+			fetchUserId();
 			navigate("/");
-			console.log("Login", userId);
 		}
 	};
 
@@ -70,8 +70,8 @@ const LoginReg = () => {
 		} else {
 			toast.success(data.message);
 			console.log("now navigating to login");
-		
 			navigate("/login");
+			fetchUserId();
 		}
 	};
 

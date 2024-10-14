@@ -15,61 +15,72 @@ import SingleItemDetails from "./components/items/singleItemDetails";
 import Reviews from "./components/Reviews";
 import { UserAuthContextProvider } from "./contexts/userAuth";
 import ProtectedRoute from "./components/ProtectedRoute"; // Import the ProtectedRoute component
+import UserPost from "./components/users/UserPost";
 
 function App() {
-    return (
-        <UserAuthContextProvider>
-            <div>
-                <Navbar />
-                <Routes>
-                    <Route path="/login" element={<LoginReg />} />
+	return (
+		<UserAuthContextProvider>
+			<div>
+				<Navbar />
+				<Routes>
+					<Route path="/login" element={<LoginReg />} />
 
-                    {/* Protect these routes */}
-                    <Route
-                        path="/lostform"
-                        element={
-                            <ProtectedRoute>
-                                <LostForm />
-                            </ProtectedRoute>
-                        }
-                    />
-                    <Route
-                        path="/foundform"
-                        element={
-                            <ProtectedRoute>
-                                <FoundForm />
-                            </ProtectedRoute>
-                        }
-                    />
-                    <Route
-                        path="/showitems"
-                        element={
-                            <ProtectedRoute>
-                                <ShowItemHome />
-                            </ProtectedRoute>
-                        }
-                    />
+					{/* Protect these routes */}
+					<Route
+						path="/lostform"
+						element={
+							<ProtectedRoute>
+								<LostForm />
+							</ProtectedRoute>
+						}
+					/>
+					<Route
+						path="/foundform"
+						element={
+							<ProtectedRoute>
+								<FoundForm />
+							</ProtectedRoute>
+						}
+					/>
+					<Route
+						path="/showitems"
+						element={
+							<ProtectedRoute>
+								<ShowItemHome />
+							</ProtectedRoute>
+						}
+					/>
 
-                    <Route path="/donationhomepage" element={<Donationhomepage />} />
+					<Route path="/donationhomepage" element={<Donationhomepage />} />
 
-                    <Route
-                        path="/"
-                        element={
-                            <>
-                                <HeroSection />
-                                <GuidProcess />
-                                <LatestObject />
-                                <Reviews />
-                                <ScrollerArrow />
-                            </>
-                        }
-                    />
-                    <Route path="/item/:id" element={<SingleItemDetails />} />
-                </Routes>
-                <Footer />
-            </div>
-        </UserAuthContextProvider>
-    );
+					<Route
+						path="/"
+						element={
+							<>
+								<HeroSection />
+								<GuidProcess />
+								<LatestObject />
+								<Reviews />
+								<ScrollerArrow />
+							</>
+						}
+					/>
+					<Route path="/item/:id" element={<SingleItemDetails />} />
+
+                        {/* user post i.e user show user created post only */}
+					<Route
+						path="/userPost/:id"
+						element={
+							<ProtectedRoute>
+								<UserPost />
+							</ProtectedRoute>
+						}
+					></Route>
+				</Routes>
+				<Footer />
+			</div>
+		</UserAuthContextProvider>
+	);
 }
 
 export default App;
