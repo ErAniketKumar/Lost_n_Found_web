@@ -7,7 +7,7 @@ import { useUserAuthContext } from "@/contexts/userAuth";
 import DropDownAfterLogin from "./DropDownAfterLogin";
 
 // Mobile Navbar Component
-const MobileNavbar = ({ isOpen, toggleMenu }) => {
+const MobileNavbar = ({ isOpen, toggleMenu, userInfo }) => {
 	return (
 		<div
 			className={`fixed inset-0 bg-gray-900 bg-opacity-90 z-[1000] transform ${
@@ -16,7 +16,7 @@ const MobileNavbar = ({ isOpen, toggleMenu }) => {
 		>
 			<div className="p-6 flex flex-col items-center space-y-4 text-white">
 				<NavLink className="text-2xl font-bold" to="/" onClick={toggleMenu}>
-					May i helpU
+					May I help U
 				</NavLink>
 				<NavLink className="text-lg" to="/lostform" onClick={toggleMenu}>
 					<div className="flex items-center space-x-2">
@@ -29,21 +29,28 @@ const MobileNavbar = ({ isOpen, toggleMenu }) => {
 					</div>
 				</NavLink>
 				<NavLink
-					className="text-lg"
-					to="/donationhomepage"
+					className="text-lg" 
+					to="/donationhomepage" 
 					onClick={toggleMenu}
 				>
 					<div className="flex items-center space-x-2">
 						<BiDonateHeart /> <span>Donate Now</span>
 					</div>
 				</NavLink>
-				<NavLink
-					className="text-lg font-bold bg-orange-500 px-4 py-2 rounded-sm"
-					to="/login"
-					onClick={toggleMenu}
-				>
-					Sign In
-				</NavLink>
+				{/* Conditional rendering for the dropdown or sign in link */}
+				{userInfo ? (
+					<div className="text-lg p-2 font-bold hover:text-white text-[#ea0eac] hover:bg-[#ea0eac] border rounded-sm border-[#ea0eac] relative">
+						<DropDownAfterLogin userInfo={userInfo} />
+					</div>
+				) : (
+					<NavLink
+						className="text-lg font-bold bg-orange-500 px-4 py-2 rounded-sm"
+						to="/login"
+						onClick={toggleMenu}
+					>
+						Sign In
+					</NavLink>
+				)}
 				<button
 					className="text-lg font-bold bg-red-500 px-4 py-2 rounded-sm"
 					onClick={toggleMenu}
@@ -102,7 +109,7 @@ const Navbar = () => {
 								className="text-4xl font-bold text-[#ea0eac] whitespace-nowrap"
 								to="/"
 							>
-								May i help U
+								May I help U
 							</NavLink>
 
 							<NavLink className="flex" to="/lostform">
@@ -122,22 +129,19 @@ const Navbar = () => {
 									<BiDonateHeart className="mt-1" /> <span>Donate Now</span>
 								</div>
 							</NavLink>
-							
-						{
-							userInfo ? (
+							{/* Conditional rendering for the dropdown or sign in link */}
+							{userInfo ? (
 								<div className="flex text-xl p-2 font-bold hover:text-white text-[#ea0eac] hover:bg-[#ea0eac] border rounded-sm border-[#ea0eac] relative">
 									<DropDownAfterLogin userInfo={userInfo} />
 								</div>
 							) : (
 								<NavLink
-								className="text-lg font-bold p-2 rounded-sm bg-orange-500 text-white hover:bg-orange-400"
-								to="/login"
-							>
-								SignIn
-							</NavLink>
-							)
-						}
-							
+									className="text-lg font-bold p-2 rounded-sm bg-orange-500 text-white hover:bg-orange-400"
+									to="/login"
+								>
+									Sign In
+								</NavLink>
+							)}
 						</div>
 					</div>
 				</div>
@@ -147,7 +151,7 @@ const Navbar = () => {
 			<div className="block md:hidden z-[999] fixed top-0 left-0 right-0 bg-[#f5f5f5] p-6">
 				<div className="flex justify-between items-center">
 					<NavLink className="text-4xl font-bold text-[#ea0eac]" to="/">
-						May i helpU
+						May I help U
 					</NavLink>
 
 					<button
@@ -160,7 +164,11 @@ const Navbar = () => {
 			</div>
 
 			{/* Mobile Menu Overlay */}
-			<MobileNavbar isOpen={isMobileMenuOpen} toggleMenu={toggleMobileMenu} />
+			<MobileNavbar
+				isOpen={isMobileMenuOpen}
+				toggleMenu={toggleMobileMenu}
+				userInfo={userInfo} // Pass userInfo to MobileNavbar
+			/>
 		</>
 	);
 };

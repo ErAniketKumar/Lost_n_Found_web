@@ -54,6 +54,11 @@ const DropDownAfterLogin = ({userInfo}) => {
                           My Post
                         </Link>
 					</DropdownMenuItem>
+					<DropdownMenuItem className="focus:outline-none">
+                        <Link to= "/showitems">
+                          See All Post
+                        </Link>
+					</DropdownMenuItem>
 					<DropdownMenuItem className="focus:outline-none" onClick={handleLogOut}>
 						Logout
 					</DropdownMenuItem>

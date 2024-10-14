@@ -54,7 +54,7 @@ const FoundForm = () => {
 				>
 					<div className="flex flex-col">
 						<label htmlFor="title">
-							Please enter the type of item(s) you found.
+							Please enter the title of item(s) you found.
 						</label>
 						<input
 							className="border border-gray-900 p-2"

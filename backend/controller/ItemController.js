@@ -157,44 +157,69 @@ const DeleteItem = asyncHandler(async (req, res) => {
 });
 
 const UpdateItem = asyncHandler(async (req, res) => {
-	try {
-		const { id } = req.params;
-		const {
-			title,
-			category,
-			itemLocation,
-			dateTime,
-			imageUrl,
-			currentAddress,
-			description,
-		} = req.body;
-		const itemInfo = await itemModel.findByIdAndUpdate(
-			id,
-			{
-				$set: {
-					title,
-					category,
-					itemLocation,
-					dateTime,
-					imageUrl,
-					currentAddress,
-					description,
-				},
-			},
-			{ new: true, runValidators: true }
-		);
-		if (itemInfo) {
-			return res
-				.status(200)
-				.json({ message: "Item updated successfully", item: itemInfo });
-		} else {
-			return res.status(404).json({ message: "Item not found" });
+	upload(req, res, async (err) => {
+		if (err) {
+			return res.status(500).json({ message: "File upload failed" });
 		}
-	} catch (error) {
-		console.error("Update item error:", error);
-		return res.status(500).json({ message: "Internal server error" });
-	}
+		try {
+			const { id } = req.params;
+			const {
+				title,
+				category,
+				itemLocation,
+				dateTime,
+				currentAddress,
+				description,
+				contactNo,
+			} = req.body;
+
+			// Find the existing item
+			const existingItem = await itemModel.findById(id);
+			if (!existingItem) {
+				return res.status(404).json({ message: "Item not found" });
+			}
+
+			// Validate required fields
+			if (!title && !category && !itemLocation) {
+				return res.status(400).json({ message: "Title, category, and item location are required." });
+			}
+
+			// Prepare updated data, using existing values if new ones are not provided
+			const updatedData = {
+				title: title || existingItem.title,
+				category: category || existingItem.category,
+				itemLocation: itemLocation || existingItem.itemLocation,
+				dateTime: dateTime || existingItem.dateTime,
+				currentAddress: currentAddress || existingItem.currentAddress,
+				description: description || existingItem.description,
+				contactNo: contactNo || existingItem.contactNo,
+			};
+
+			// Check if a new file was uploaded
+			if (req.file) {
+				updatedData.imageUrl = req.file.filename; // Update imageUrl if a new file is uploaded
+			}
+
+			// Update the item
+			const updatedItem = await itemModel.findByIdAndUpdate(
+				id,
+				{ $set: updatedData },
+				{ new: true, runValidators: true }
+			);
+
+			// Check if the item was updated
+			if (!updatedItem) {
+				return res.status(404).json({ message: "Item not found" });
+			}
+
+			return res.status(200).json({ message: "Item updated successfully", item: updatedItem });
+		} catch (error) {
+			console.error("Update item error:", error);
+			return res.status(500).json({ message: "Internal server error" });
+		}
+	});
 });
+
 
 const filterItemByCategoryAndDate = asyncHandler(async (req, res) => {
 	const { category, startDate, endDate, itemLocation } = req.body;

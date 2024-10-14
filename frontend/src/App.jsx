@@ -16,6 +16,7 @@ import Reviews from "./components/Reviews";
 import { UserAuthContextProvider } from "./contexts/userAuth";
 import ProtectedRoute from "./components/ProtectedRoute"; // Import the ProtectedRoute component
 import UserPost from "./components/users/UserPost";
+import UpdateItemForm from "./pages/UpdateItemForm";
 
 function App() {
 	return (
@@ -67,12 +68,21 @@ function App() {
 					/>
 					<Route path="/item/:id" element={<SingleItemDetails />} />
 
-                        {/* user post i.e user show user created post only */}
+					{/* user post i.e user show user created post only */}
 					<Route
 						path="/userPost/:id"
 						element={
 							<ProtectedRoute>
 								<UserPost />
+							</ProtectedRoute>
+						}
+					></Route>
+
+					<Route
+						path="/updateItem/:id"
+						element={
+							<ProtectedRoute>
+								<UpdateItemForm />
 							</ProtectedRoute>
 						}
 					></Route>

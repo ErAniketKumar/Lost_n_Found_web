@@ -61,11 +61,11 @@ const LatestObject = () => {
 										</p>
 									</div>
 									<div className="ml-auto space-y-4">
-										<h1 className="text-lg bg-gray-200 rounded px-16 py-4">
+										<h1 className="text-lg bg-gray-200 rounded md:px-16 py-4 px-4">
 											{item.itemType}
 										</h1>
 										<Link to={`/item/${item._id}`}>
-											<button className="text-lg mt-2 text-nowrap border border-orange-500 hover:bg-purple-800 rounded px-16 py-4 hover:text-white">
+											<button className="text-lg mt-2 text-nowrap border border-orange-500 hover:bg-purple-800 rounded md:px-16 px-4 py-4 hover:text-white">
 												Show Details
 											</button>
 										</Link>

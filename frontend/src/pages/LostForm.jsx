@@ -56,7 +56,7 @@ const LostForm = () => {
 				>
 					<div className="flex flex-col">
 						<label htmlFor="title">
-							Please enter the type of item(s) you lost.
+							Please enter the title of item(s) you lost.
 						</label>
 						<input
 							className="border border-gray-900 p-2"
