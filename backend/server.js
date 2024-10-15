@@ -6,15 +6,18 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 
 dotenv.config();
-const allowedOrigins = [
-  'https://mayihelpuu.vercel.app/', // Your deployed frontend URL
-  'http://localhost:5173',            // Localhost for development
-];
+// const allowedOrigins = [
+//   'https://mayihelpuu.vercel.app/', // Your deployed frontend URL
+//   'http://localhost:5173',            // Localhost for development
+// ];
 
-app.use(cors({
-  origin: allowedOrigins,
-  credentials: true // Allow credentials if needed
-}));
+// app.use(cors({
+//   origin: allowedOrigins,
+//   credentials: true // Allow credentials if needed
+// }));
+
+app.use(cors());
+
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -23,7 +26,6 @@ const port = process.env.PORT || 5000;
 const connectDB = require("./config/databaseConnection")
 
 connectDB();
-
 
 const router = require("./routes/thisRoutes");
 
