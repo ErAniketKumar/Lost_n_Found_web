@@ -13,17 +13,19 @@ export const UserAuthContextProvider = ({ children }) => {
     // Function to fetch the user ID using the JWT token stored in cookies
     const fetchUserId = async () => {
         try {
+            console.log("API URL:", VITE_API_URL); // Add a console log to check the API URL
+    
             const response = await fetch(`${VITE_API_URL}/getuserId`, {
                 method: "GET",
                 credentials: "include", // Important for sending cookies
             });
-
+    
             if (!response.ok) {
                 throw new Error("Failed to fetch user ID"); // Error if response is not successful
             }
-
+    
             const data = await response.json();
-
+    
             if (data?.userId) {
                 setUserId(data.userId); // Set userId if fetched successfully
             } else {
@@ -37,7 +39,7 @@ export const UserAuthContextProvider = ({ children }) => {
             setLoading(false); // Set loading to false after fetch completes
         }
     };
-
+    
     useEffect(() => {
         fetchUserId(); // Fetch user ID on component mount
     }, []);
