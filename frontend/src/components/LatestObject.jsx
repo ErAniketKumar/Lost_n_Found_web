@@ -35,7 +35,7 @@ const LatestObject = () => {
 					latestData.map((item, index) => (
 						<div
 							key={index}
-							className="grid md:grid-cols-3 md:gap-6 gap-4 grid-cols-1 w-[70%] bg-[#f5f5f5] px-5 py-10"
+							className="grid md:grid-cols-3 md:gap-6 gap-4 grid-cols-1 md:w-[70%] w-[80%] bg-[#f5f5f5] px-5 py-10"
 						>
 							<div>
 								<img
