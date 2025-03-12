@@ -21,6 +21,6 @@ const connectDB = require("./config/databaseConnection")
 connectDB();
 
 const router = require("./routes/thisRoutes");
-
+// router 
 app.use("/api",router);
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
