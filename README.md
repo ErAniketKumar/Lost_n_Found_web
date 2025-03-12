@@ -14,7 +14,7 @@
 </ul>
 
 
-<h2 style="font-family: Arial, sans-serif;">Installation</h2>
+<h2 style="font-family: Arial, sans-serif;">Installation/ setup</h2>
 <h3 style="font-family: Arial, sans-serif;">Clone the repository</h3>
 
 bash
