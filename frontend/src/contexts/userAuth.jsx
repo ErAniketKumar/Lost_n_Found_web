@@ -5,7 +5,8 @@ export const UserAuthContext = createContext();
 
 // Provider component to wrap around your app
 export const UserAuthContextProvider = ({ children }) => {
-    const VITE_API_URL = import.meta.env.VITE_AUTH_API_URL;
+    // const VITE_API_URL ="http://localhost:5000/api/" || import.meta.env.VITE_AUTH_API_URL;
+	const VITE_API_URL = import.meta.env.VITE_AUTH_API_URL;
     const [userId, setUserId] = useState(null); // State to store userId
     const [loading, setLoading] = useState(true); // Loading state to manage fetch status
     const [error, setError] = useState(null); // Error state to handle issues

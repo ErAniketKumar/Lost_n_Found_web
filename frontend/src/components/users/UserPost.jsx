@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 const UserPost = () => {
 	const { id } = useParams();
 	const [userPostData, setUserPostData] = useState([]);
+	// const VITE_API_URL ="http://localhost:5000/api/" || import.meta.env.VITE_AUTH_API_URL;
 	const VITE_API_URL = import.meta.env.VITE_AUTH_API_URL;
 	const navigate = useNavigate();
 

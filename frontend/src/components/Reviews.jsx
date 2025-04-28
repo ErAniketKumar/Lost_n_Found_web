@@ -1,203 +1,171 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
 import {
-	Dialog,
-	DialogContent,
-	DialogDescription,
-	DialogHeader,
-	DialogTitle,
-	DialogTrigger,
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
 } from "@/components/ui/dialog";
 
 const Reviews = () => {
-	const settings = {
-		dots: true,
-		infinite: true,
-		speed: 500,
-		slidesToShow: 3,
-		slidesToScroll: 1,
-		autoplay: true,
-		autoplaySpeed: 2000,
-		cssEase: "linear",
-		responsive: [
-			{
-				breakpoint: 1024,
-				settings: {
-					slidesToShow: 2,
-					slidesToScroll: 1,
-					infinite: true,
-					dots: true,
-				},
-			},
-			{
-				breakpoint: 600,
-				settings: {
-					slidesToShow: 1,
-					slidesToScroll: 1,
-				},
-			},
-		],
-	};
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 2000,
+    cssEase: "linear",
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: { slidesToShow: 2, slidesToScroll: 1, infinite: true, dots: true },
+      },
+      {
+        breakpoint: 600,
+        settings: { slidesToShow: 1, slidesToScroll: 1 },
+      },
+    ],
+    appendDots: (dots) => (
+      <div>
+        <ul className="flex justify-center space-x-2">{dots}</ul>
+      </div>
+    ),
+    customPaging: () => (
+      <div className="w-3 h-3 bg-[#ff6200] rounded-full"></div>
+    ),
+  };
 
-	const [name, setName] = useState("");
-	const [starCount, setStarCount] = useState("");
-	const [comments, setComments] = useState("");
-	const [reviewsData, setReviewsData] = useState([]);
-
+  const [name, setName] = useState("");
+  const [starCount, setStarCount] = useState("");
+  const [comments, setComments] = useState("");
+  const [reviewsData, setReviewsData] = useState([]);
+  // const VITE_API_URL ="http://localhost:5000/api/" || import.meta.env.VITE_AUTH_API_URL;
 	const VITE_API_URL = import.meta.env.VITE_AUTH_API_URL;
-	const navigate = useNavigate();
-	const handleReviewFormSubmit = async (e) => {
-		e.preventDefault();
-		const reviewData = {
-			name,
-			starCount: Number(starCount), // Convert starCount to a number
-			comments,
-		};
-		const response = await fetch(`${VITE_API_URL}/review`, {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify(reviewData),
-		});
-		if (response.ok) {
-			alert("Review submitted successfully!");
-			setName("");
-			setStarCount("");
-			setComments("");
-			navigate("/");
-		} else {
-			alert("Failed to submit review");
-		}
-	};
+  const navigate = useNavigate();
 
-	const fetchReviews = async (ReviewApiUrl) => {
-		try {
-			const response = await fetch(ReviewApiUrl, {
-				method: "GET",
-				headers: {
-					"Content-Type": "application/json",
-				},
-			});
-			if (!response.ok) {
-				throw new Error("Failed to fetch reviews");
-			} else {
-				const data = await response.json();
-				setReviewsData(data);
-			}
-		} catch (error) {
-			console.log(error);
-		}
-	};
+  const handleReviewFormSubmit = async (e) => {
+    e.preventDefault();
+    const reviewData = { name, starCount: Number(starCount), comments };
+    const response = await fetch(`${VITE_API_URL}/review`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(reviewData),
+    });
+    if (response.ok) {
+      alert("Review submitted successfully!");
+      setName("");
+      setStarCount("");
+      setComments("");
+      navigate("/");
+    } else {
+      alert("Failed to submit review");
+    }
+  };
 
-	useEffect(() => {
-		fetchReviews(`${VITE_API_URL}/review`);
-	}, []);
+  const fetchReviews = async (ReviewApiUrl) => {
+    try {
+      const response = await fetch(ReviewApiUrl, { method: "GET", headers: { "Content-Type": "application/json" } });
+      if (!response.ok) throw new Error("Failed to fetch reviews");
+      const data = await response.json();
+      setReviewsData(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-	return (
-		<div className="max-w-screen-2xl container mx-auto px-4 md:px-20 bg-[#f5f5f5] p-6">
-			<h1 className="text-3xl flex justify-center my-3 font-bold text-gray-700">
-				Meet the people we have{" "}
-				<span className="text-[#ea0eac] ml-2"> helped!</span>
-			</h1>
-			<Slider {...settings}>
-				{reviewsData &&
-					reviewsData.map((review, index) => (
-						<div
-							key={index}
-							className="W-[10rem] h-[12rem] bg-white p-5 shadow-md"
-						>
-							<div className="flex gap-4">
-								<div className="w-10 h-10 bg-gray-500 rounded-full flex items-center justify-center">
-									<span className="text-white font-bold">{review.initial}</span>
-								</div>
-								<div>
-									<h1 className="text-lg font-bold text-gray-700">
-										{review.name}
-									</h1>
-									<p>{"⭐".repeat(review.starCount)}</p>
-									<p className="text-gray-700 flex flex-wrap w-[15rem]">
-										{review.comments}
-									</p>
-									<p className="text-sm text-gray-700">{review.date}</p>
-								</div>
-							</div>
-						</div>
-					))}
-			</Slider>
+  useEffect(() => {
+    fetchReviews(`${VITE_API_URL}/review`);
+  }, []);
 
-			<div className="flex justify-center mt-10">
-				<Dialog>
-					<DialogTrigger className="text-lg font-semibold border hover:bg-teal-800 hover:text-white hover:border-2 p-2 rounded-sm border-[#ea0eac] hover:border-orange-500">
-						Click - Please gives a reviews
-					</DialogTrigger>
-					<DialogContent>
-						<DialogHeader>
-							<DialogTitle>Gives Your Valueble Feedback</DialogTitle>
-							<form
-								className="flex flex-col gap-2"
-								action="/review"
-								method="post"
-								onSubmit={handleReviewFormSubmit}
-							>
-								<div className="flex flex-col">
-									<label className="text-gray-800" htmlFor="name">
-										Name
-									</label>
-									<input
-										className="text-gray-900 outline-none p-1 border border-gray-700"
-										type="text"
-										id="name"
-										name="name"
-										value={name}
-										onChange={(e) => setName(e.target.value)}
-									/>
-								</div>
-								<div className="flex flex-col">
-									<label className="text-gray-800" htmlFor="starCount">
-										No of Star
-									</label>
-									<input
-										className="text-gray-900 outline-none p-1 border border-gray-700"
-										type="number"
-										id="starCount"
-										name="starCount"
-										placeholder="1-5"
-										value={starCount}
-										onChange={(e) => setStarCount(e.target.value)}
-										min="1"
-										max="5"
-									/>
-								</div>
-								<div className="flex flex-col">
-									<label className="text-gray-800" htmlFor="comments">
-										Comment
-									</label>
-									<textarea
-										className="text-gray-900 outline-none p-1 border border-gray-700"
-										rows="2"
-										name="comments"
-										id="comments"
-										value={comments}
-										onChange={(e) => setComments(e.target.value)}
-									></textarea>
-								</div>
-								<button className="bg-orange-500 text-white hover:bg-orange-400 px-2 py-2 rounded-md">
-									Submit
-								</button>
-							</form>
-							<DialogDescription></DialogDescription>
-						</DialogHeader>
-					</DialogContent>
-				</Dialog>
-			</div>
-		</div>
-	);
+  return (
+    <section className="max-w-screen-2xl mx-auto px-6 py-12 bg-[#f5f5f5]">
+      <h2 className="text-4xl font-bold text-center text-[#ea0eac] mb-10">
+        Meet the People We Have <span className="text-[#ff6200]">Helped!</span>
+      </h2>
+      <Slider {...settings}>
+        {reviewsData &&
+          reviewsData.map((review, index) => (
+            <div key={index} className="p-4">
+              <div className="bg-white shadow-lg rounded-lg p-6 h-64">
+                <div className="flex gap-4">
+                  <div className="w-12 h-12 bg-[#ea0eac] rounded-full flex items-center justify-center">
+                    <span className="text-white font-bold">{review.initial}</span>
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-lg font-semibold text-[#1f2937]">{review.name}</h3>
+                    <p className="text-[#facc15]">{"⭐".repeat(review.starCount)}</p>
+                    <p className="text-base text-[#1f2937] line-clamp-3">{review.comments}</p>
+                    <p className="text-sm text-gray-500">{review.date}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+      </Slider>
+      <div className="flex justify-center mt-10">
+        <Dialog>
+          <DialogTrigger className="text-lg font-semibold bg-[#ff6200] text-white px-6 py-3 rounded-lg hover:bg-[#ea0eac] transition-colors">
+            Give Your Review
+          </DialogTrigger>
+          <DialogContent className="bg-white rounded-lg p-6">
+            <DialogHeader>
+              <DialogTitle className="text-2xl text-[#1f2937]">Share Your Feedback</DialogTitle>
+              <form className="flex flex-col gap-4" onSubmit={handleReviewFormSubmit}>
+                <div className="flex flex-col">
+                  <label className="text-base text-[#1f2937]" htmlFor="name">
+                    Name
+                  </label>
+                  <input
+                    className="border border-gray-300 rounded-md p-2 text-base"
+                    type="text"
+                    id="name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                  />
+                </div>
+                <div className="flex flex-col">
+                  <label className="text-base text-[#1f2937]" htmlFor="starCount">
+                    Number of Stars (1-5)
+                  </label>
+                  <input
+                    className="border border-gray-300 rounded-md p-2 text-base"
+                    type="number"
+                    id="starCount"
+                    placeholder="1-5"
+                    value={starCount}
+                    onChange={(e) => setStarCount(e.target.value)}
+                    min="1"
+                    max="5"
+                  />
+                </div>
+                <div className="flex flex-col">
+                  <label className="text-base text-[#1f2937]" htmlFor="comments">
+                    Comment
+                  </label>
+                  <textarea
+                    className="border border-gray-300 rounded-md p-2 text-base"
+                    rows="3"
+                    id="comments"
+                    value={comments}
+                    onChange={(e) => setComments(e.target.value)}
+                  ></textarea>
+                </div>
+                <button className="bg-[#ff6200] text-white py-3 rounded-lg hover:bg-[#ea0eac] transition-colors">
+                  Submit
+                </button>
+              </form>
+            </DialogHeader>
+          </DialogContent>
+        </Dialog>
+      </div>
+    </section>
+  );
 };
 
 export default Reviews;
