@@ -61,7 +61,7 @@ const LostForm = () => {
 	};
 
 	return (
-		<section className="max-w-screen-2xl mx-auto px-6 py-12 bg-[#f5f5f5] min-h-screen">
+		<section className="max-w-screen-2xl mx-auto px-6 py-12 bg-[#f5f5f5] min-h-screen mt-10">
 			<ToastContainer />
 			<div className="max-w-lg mx-auto bg-white rounded-lg shadow-lg p-8">
 				<h1 className="text-3xl font-bold text-center text-[#ea0eac] mb-6">

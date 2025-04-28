@@ -9,7 +9,7 @@ import { useUserAuthContext } from "@/contexts/userAuth";
 
 const LoginReg = () => {
  // const VITE_API_URL ="http://localhost:5000/api/" || import.meta.env.VITE_AUTH_API_URL;
- const VITE_API_URL = import.meta.env.VITE_AUTH_API_URL;
+  const VITE_API_URL = import.meta.env.VITE_AUTH_API_URL;
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [number, setNumber] = useState("");
@@ -23,7 +23,7 @@ const LoginReg = () => {
   const handleLoginFormSubmit = async (e) => {
     e.preventDefault();
     const loginData = { email, password };
-    const response = await fetch(`${VITE_AUTH_API_URL}/login`, {
+    const response = await fetch(`${VITE_API_URL}/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(loginData),
@@ -46,7 +46,7 @@ const LoginReg = () => {
       return;
     }
     const signupData = { username, email, number, password, isAdmin };
-    const response = await fetch(`${VITE_AUTH_API_URL}/signup`, {
+    const response = await fetch(`${VITE_API_URL}/signup`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(signupData),

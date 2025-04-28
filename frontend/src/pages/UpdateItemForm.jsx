@@ -161,7 +161,7 @@ const UpdateItemForm = () => {
 							htmlFor="currentAddress"
 							className="text-lg font-medium text-[#1f2937]"
 						>
-							Current Address (if >20km from location)
+							Current Address (if {'>'}20km from location)
 						</label>
 						<input
 							className="mt-1 border border-gray-300 rounded-md p-3 text-base focus:outline-none focus:ring-2 focus:ring-[#ff6200]"
