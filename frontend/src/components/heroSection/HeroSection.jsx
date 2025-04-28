@@ -10,8 +10,8 @@ import { FaArrowLeft, FaArrowRight } from "react-icons/fa"; // Add react-icons f
 
 const HeroSection = () => {
   const images = [
-    "/images/bgimg (1).jpg",
-    "/images/bgimg (6).jpg",
+    "/images/carousel11.jpg",
+    "/images/carousel12.jpg",
     "/images/bgimg (4).jpg",
   ];
 
