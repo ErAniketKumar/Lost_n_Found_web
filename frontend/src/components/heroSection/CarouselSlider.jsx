@@ -15,14 +15,14 @@ const AccordianSlider = () => {
         <CarouselContent className="transition-all duration-500 ease-in-out">
           <CarouselItem>
             <img
-              src="/images/bgimg (1).jpg"
+              src="/images/carousel11.jpg"
               alt="Slide 1"
               className="w-full h-[500px] object-cover rounded-lg shadow-lg"
             />
           </CarouselItem>
           <CarouselItem>
             <img
-              src="/images/bgimg (6).jpg"
+              src="/images/carousel12.jpg"
               alt="Slide 2"
               className="w-full h-[500px] object-cover rounded-lg shadow-lg"
             />
